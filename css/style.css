@@ -577,3 +577,40 @@ a {
 	font-size: 12px;
 	letter-spacing: 0pt;
 }
+
+/* schedule section styling */
+.schedule {
+    background: rgba(255,255,255,0.9);
+    padding: 16px 24px;
+    border-radius: 12px;
+    max-width: 400px;
+    margin: 24px auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-family: 'Dancing Script', cursive;
+    color: #564861;
+}
+
+.schedule h4 {
+    margin-bottom: 12px;
+    font-size: 1.4em;
+    text-align: center;
+}
+
+.schedule ul {
+    list-style: none;
+    padding: 0;
+}
+
+.schedule li {
+    /* icons are inline now; add left padding for spacing */
+    padding-left: 24px;
+    margin-bottom: 8px;
+    list-style: none;
+}
+
+.schedule li i.fa {
+    margin-right: 8px;
+    color: #674ea7;
+    width: 16px;
+    text-align: center;
+}
