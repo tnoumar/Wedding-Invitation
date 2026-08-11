@@ -83,34 +83,40 @@
           <li><i class="fa fa-glass"></i> After de 12 h à 16 h</li>
         </ul>
       </div>
-         <!-- RSVP form -->
-         <div class="rsvp" id="rsvp">
-            <h4>Confirmez votre présence</h4>
-            <!-- Netlify form: name and data-netlify attributes enable Netlify Forms capture -->
-            <form id="rsvp-form" name="rsvp" method="POST" action="/success" data-netlify="true" netlify data-netlify-honeypot="bot-field">
-               <input type="hidden" name="form-name" value="rsvp">
-               <input type="hidden" name="date" id="rsvp-date" value="">
-               <!-- honeypot field for bots (Netlify) -->
-               <p style="display:none"><label>Don’t fill this out if you're human: <input name="bot-field"></label></p>
-               <label for="rsvp-name">Nom</label>
-               <input type="text" id="rsvp-name" name="name" required placeholder="Votre nom">
+      <!-- RSVP form -->
+<div class="rsvp" id="rsvp">
+  <h4>Confirmez votre présence</h4>
+  
+  <!-- FIX 1: Cleaned up form attributes (removed action="/success" and conflicting netlify tags) -->
+  <form id="rsvp-form" name="rsvp" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+     
+     <input type="hidden" name="form-name" value="rsvp">
+     <input type="hidden" name="date" id="rsvp-date" value="">
+     
+     <!-- Honeypot field for bots -->
+     <p style="display:none">
+       <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+     </p>
 
-               <label for="rsvp-phone">Numéro de contact</label>
-               <input type="tel" id="rsvp-phone" name="phone" required placeholder="+33 6 12 34 56 78">
+     <label for="rsvp-name">Nom</label>
+     <input type="text" id="rsvp-name" name="name" required placeholder="Votre nom">
 
-               <label for="rsvp-attending">Présence</label>
-               <select id="rsvp-attending" name="attending">
-                  <option value="yes">Oui</option>
-                  <option value="no">Non</option>
-               </select>
+     <label for="rsvp-phone">Numéro de contact</label>
+     <input type="tel" id="rsvp-phone" name="phone" required placeholder="+33 6 12 34 56 78">
 
-               <div style="margin-top:12px;">
-                  <button type="submit" class="btn">Confirmer</button>
-               </div>
-            </form>
-            <div id="rsvp-msg" role="status" aria-live="polite" style="margin-top:8px;color:#145689;font-weight:700"></div>
+     <label for="rsvp-attending">Présence</label>
+     <select id="rsvp-attending" name="attending">
+        <option value="yes">Oui</option>
+        <option value="no">Non</option>
+     </select>
 
-         </div>
+     <div style="margin-top:12px;">
+        <button type="submit" class="btn">Confirmer</button>
+     </div>
+  </form>
+  
+  <div id="rsvp-msg" role="status" aria-live="polite" style="margin-top:8px;color:#145689;font-weight:700"></div>
+</div>
 
          <!-- Responses modal -->
          <div id="responses-modal" class="modal" aria-hidden="true">

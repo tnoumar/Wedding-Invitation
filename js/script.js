@@ -415,50 +415,48 @@ console.log('%cVotre présence est requise !%c\n\nChaleureusement, Taha & Marbe
 
     if(form){
         form.addEventListener('submit', function(e){
+            e.preventDefault();
+
             var name = document.getElementById('rsvp-name').value.trim();
             var phone = document.getElementById('rsvp-phone').value.trim();
             var attending = document.getElementById('rsvp-attending').value;
-            if(!name || name.length < 2){ msg.textContent = 'Veuillez entrer un nom valide.'; return; }
-            if(!validPhone(phone)){ msg.textContent = 'Veuillez entrer un numéro de contact valide.'; return; }
-            var entry = { name: name, phone: phone, attending: attending, date: Date.now() };
 
-            var endpoint = window.RSVP_ENDPOINT || null;
-            var isNetlify = form.hasAttribute('data-netlify') && isNetlifyDeploy();
-            var localPreview = isLocalPreview();
-            if(isNetlify){
-                if(dateField){ dateField.value = entry.date; }
-                // Allow native Netlify form submission when deployed or on a Netlify custom domain.
+            if(!name || name.length < 2){
+                msg.textContent = 'Veuillez entrer un nom valide.';
                 return;
             }
-            e.preventDefault();
-            if(dateField){ dateField.value = entry.date; }
-            if(form.hasAttribute('data-netlify')){
-                addRsvp(entry);
-                msg.textContent = 'Prévisualisation locale : réponse enregistrée localement. Sur Netlify, le formulaire sera envoyé.';
-                form.reset();
-            } else if(endpoint){
-                fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(entry)
-                }).then(function(resp){
-                    if(resp.ok){
-                        msg.textContent = 'Merci — votre présence a été envoyée.';
-                        form.reset();
-                    } else {
-                        throw new Error('Server error');
-                    }
-                }).catch(function(){
-                    addRsvp(entry);
-                    msg.textContent = 'Serveur indisponible — réponse sauvegardée localement.';
-                    form.reset();
-                });
-            } else {
-                addRsvp(entry);
-                msg.textContent = 'Merci — votre présence a été confirmée (enregistrée localement).';
-                form.reset();
+            if(!validPhone(phone)){
+                msg.textContent = 'Veuillez entrer un numéro de contact valide.';
+                return;
             }
-            setTimeout(function(){ msg.textContent = ''; }, 5000);
+
+            if(dateField){
+                dateField.value = new Date().toISOString();
+            }
+
+            var formData = new FormData(this);
+            var action = this.action || '/';
+            var body = new URLSearchParams(formData).toString();
+
+            fetch(action, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: body
+            })
+            .then(function(response){
+                if(!response.ok){
+                    throw new Error('Netlify submission failed');
+                }
+                msg.textContent = 'Merci ! Votre réponse a bien été enregistrée.';
+                form.reset();
+            })
+            .catch(function(error){
+                msg.textContent = 'Erreur lors de l\'envoi. Veuillez réessayer.';
+                console.error(error);
+            })
+            .finally(function(){
+                setTimeout(function(){ msg.textContent = ''; }, 5000);
+            });
         });
     }
 
