@@ -438,6 +438,19 @@ console.log('%cVotre présence est requise !%c\n\nChaleureusement, Taha & Marbe
             var action = this.action || '/';
             var body = new URLSearchParams(formData).toString();
 
+            if(isLocalPreview()){
+                addRsvp({
+                    name: name,
+                    phone: phone,
+                    attending: attending,
+                    date: dateField ? dateField.value : new Date().toISOString()
+                });
+                msg.textContent = 'Prévisualisation locale : réponse enregistrée localement.';
+                form.reset();
+                setTimeout(function(){ msg.textContent = ''; }, 5000);
+                return;
+            }
+
             fetch(action, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
