@@ -364,7 +364,8 @@ console.log('%cVotre présence est requise !%c\n\nChaleureusement, Taha & Marbe
 
     function isNetlifyDeploy(){
         var host = window.location.hostname;
-        return /(?:^|\.)netlify\.(?:app|com)$/i.test(host);
+        var localHost = /^(localhost|127\.\d+\.\d+\.\d+|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+)$/i;
+        return window.location.protocol !== 'file:' && !localHost.test(host);
     }
 
     var form = document.getElementById('rsvp-form');
@@ -424,9 +425,9 @@ console.log('%cVotre présence est requise !%c\n\nChaleureusement, Taha & Marbe
             var endpoint = window.RSVP_ENDPOINT || null;
             var isNetlify = form.hasAttribute('data-netlify') && isNetlifyDeploy();
             var localPreview = isLocalPreview();
-            if(isNetlify && !localPreview){
+            if(isNetlify){
                 if(dateField){ dateField.value = entry.date; }
-                // Allow native Netlify form submission when deployed. Do not prevent default.
+                // Allow native Netlify form submission when deployed or on a Netlify custom domain.
                 return;
             }
             e.preventDefault();
