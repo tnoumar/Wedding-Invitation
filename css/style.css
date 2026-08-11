@@ -435,9 +435,11 @@ img {
 	justify-content: center;
 	-webkit-align-items: center;
 	align-items: center;
-	/* padding: 20px; */
+	width: 100%;
+	max-width: 1200px;
+	padding: 0 16px;
+	box-sizing: border-box;
 	text-align: center;
-	/* min-height:100%; */
 }
 
 
@@ -472,14 +474,19 @@ body {
 }
 
 .venue {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
 	width: auto;
 	height: auto;
 	background-color: #674ea7;
 	border-radius: 16px;
 	text-align: center;
 	color: #fff;
-	padding: 8px;
-	margin-right: 8px;
+	padding: 12px 16px;
+	margin-right: 0;
+	min-width: 145px;
 }
 
 .venue a {
@@ -590,10 +597,18 @@ a {
 	background: #674ea7;
 	color: #fff;
 	border: none;
-	padding: 8px 12px;
-	border-radius: 8px;
+	padding: 10px 14px;
+	border-radius: 12px;
 	cursor: pointer;
 	font-family: 'Arvo', serif;
+	transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.btn:hover,
+.venue:hover,
+.audio-toggle:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 12px 22px rgba(103, 78, 167, 0.18);
 }
 
 .audio-toggle {
@@ -703,8 +718,38 @@ a {
 
 .actions {
 	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
 	font-size: 12px;
 	letter-spacing: 0pt;
+}
+
+.actions > a,
+.actions > button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+ 	min-width: 150px;
+ 	max-width: 280px;
+ 	flex: 0 0 auto;
+ 	width: auto;
+ 	text-decoration: none;
+ 	padding: 12px 16px;
+ 	line-height: 1.3;
+ 	min-height: 48px;
+}
+
+.actions > a,
+.actions > button {
+	background: #674ea7;
+	color: #fff;
+}
+
+.actions > a:hover,
+.actions > button:hover {
+	transform: translateY(-1px);
 }
 
 /* schedule section styling */
@@ -745,9 +790,9 @@ a {
 }
 /* Photo collage styles */
 .photo-collage {
-    max-width: 900px;
+	max-width: 1100px;
     margin: 24px auto;
-    padding: 0 16px;
+    padding: 0 12px;
     color: #564861;
 }
 
@@ -760,14 +805,16 @@ a {
 }
 
 .collage-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: 240px;
-    gap: 12px;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: 12px;
+	align-items: start;
 }
 
+figure.tile,
 .tile {
-    position: relative;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
     border-radius: 20px;
     background: #f9f7fb;
@@ -776,8 +823,7 @@ a {
 
 .tile img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
     display: block;
     transition: transform 0.4s ease;
 }
@@ -786,22 +832,132 @@ a {
     transform: scale(1.05);
 }
 
-.item-1 { grid-column: 1 / span 1; grid-row: 1 / span 1; }
-.item-2 { grid-column: 2 / span 1; grid-row: 1 / span 1; }
-.item-3 { grid-column: 1 / span 1; grid-row: 2 / span 1; }
-.item-4 { grid-column: 2 / span 1; grid-row: 2 / span 1; }
+.item-1,
+.item-2,
+.item-3,
+.item-4 {
+    grid-column: auto !important;
+    grid-row: auto !important;
+}
 
 @media (max-width: 780px) {
     .collage-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        grid-auto-rows: 220px;
+        grid-template-columns: 1fr;
     }
 }
 
+@media (min-width: 900px) {
+	.collage-grid {
+		grid-template-columns: repeat(2, minmax(320px, 1fr));
+		gap: 18px;
+	}
+	.tile img {
+		object-fit: cover;
+		width: 100%;
+		height: 360px;
+		min-height: 360px;
+		max-height: 360px;
+	}
+}
+
+/* Ensure collage images override the global `img` sizing on small screens
+   (there's a global `img { max-width:30% }` for decorative images). */
+.photo-collage .tile img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
+
+@media (max-width: 900px) {
+    .photo-collage .tile img {
+        height: auto;
+        max-width: 100%;
+        object-fit: cover;
+    }
+}
+
+.photo-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+    padding: 18px;
+}
+
+.photo-modal[aria-hidden="false"] {
+    display: flex;
+}
+
+.photo-modal-content {
+    max-width: 95%;
+    max-height: 95%;
+    position: relative;
+}
+
+.photo-modal-content img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.photo-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255,255,255,0.85);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
 @media (max-width: 520px) {
-    .collage-grid {
-        grid-template-columns: 1fr;
-        grid-auto-rows: 220px;
+    .actions {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		gap: 10px;
+		width: 100%;
+		justify-content: center;
+    }
+    .actions > a,
+    .actions > button {
+		flex: 0 0 auto;
+		width: 100%;
+		max-width: 260px;
+		min-width: 0;
+		min-height: 44px;
+		padding: 10px 14px;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        box-sizing: border-box;
+        margin: 0 auto;
+    }
+    .actions > a,
+    .actions > button {
+        justify-content: center;
+    }
+    .audio-toggle {
+        bottom: 12px;
+        right: 12px;
+        width: 44px;
+        height: 44px;
+    }
+    .rsvp {
+        margin: 16px 12px;
+        width: calc(100% - 24px);
+    }
+    .photo-collage {
+        padding: 0 8px;
     }
     .photo-collage h4 {
         font-size: 1.5rem;

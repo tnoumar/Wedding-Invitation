@@ -6,7 +6,6 @@
       $('.sakura-falling').sakura();
 })(jQuery);
 
-
 // Set the date we're counting down to
 var countDownDate = new Date("Sep 05, 2026 11:00:00").getTime();
 
