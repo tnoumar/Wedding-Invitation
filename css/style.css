@@ -921,6 +921,36 @@ figure.tile,
     cursor: pointer;
 }
 
+.photo-modal-prev,
+.photo-modal-next {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	background: rgba(255,255,255,0.9);
+	border: none;
+	width: 48px;
+	height: 64px;
+	font-size: 28px;
+	border-radius: 8px;
+	box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+	cursor: pointer;
+}
+.photo-modal-prev { left: 12px; }
+.photo-modal-next { right: 12px; }
+
+.photo-modal-img {
+	max-width: 100%;
+	max-height: 75vh;
+	display: block;
+	margin: 0 auto;
+	border-radius: 12px;
+}
+.photo-modal-caption {
+	color: #fff;
+	text-align: center;
+	margin-top: 12px;
+}
+
 @media (max-width: 520px) {
     .actions {
 		display: grid;

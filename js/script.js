@@ -193,6 +193,133 @@ console.log('%cVotre présence est requise !%c\n\nChaleureusement, Taha & Marbe
     }
 })();
 
+// Local lightbox for the photo collage (no external deps)
+(function(){
+    function createModal(){
+        var modal = document.createElement('div');
+        modal.className = 'photo-modal';
+        modal.setAttribute('aria-hidden','true');
+        modal.id = 'local-photo-modal';
+
+        var content = document.createElement('div');
+        content.className = 'photo-modal-content';
+        content.setAttribute('role','dialog');
+        content.setAttribute('aria-modal','true');
+
+        var closeBtn = document.createElement('button');
+        closeBtn.className = 'photo-modal-close';
+        closeBtn.setAttribute('aria-label','Close');
+        closeBtn.innerHTML = '&times;';
+
+        var prevBtn = document.createElement('button');
+        prevBtn.className = 'photo-modal-prev';
+        prevBtn.setAttribute('aria-label','Previous');
+        prevBtn.innerHTML = '&#10094;';
+
+        var nextBtn = document.createElement('button');
+        nextBtn.className = 'photo-modal-next';
+        nextBtn.setAttribute('aria-label','Next');
+        nextBtn.innerHTML = '&#10095;';
+
+        var img = document.createElement('img');
+        img.className = 'photo-modal-img';
+        img.alt = '';
+
+        var caption = document.createElement('div');
+        caption.className = 'photo-modal-caption';
+
+        content.appendChild(closeBtn);
+        content.appendChild(prevBtn);
+        content.appendChild(nextBtn);
+        content.appendChild(img);
+        content.appendChild(caption);
+        modal.appendChild(content);
+        document.body.appendChild(modal);
+        return modal;
+    }
+
+    document.addEventListener('DOMContentLoaded', function(){
+        var modal = createModal();
+        var modalContent = modal.querySelector('.photo-modal-content');
+        var modalImg = modal.querySelector('.photo-modal-img');
+        var modalCaption = modal.querySelector('.photo-modal-caption');
+        var closeBtn = modal.querySelector('.photo-modal-close');
+        var prevBtn = modal.querySelector('.photo-modal-prev');
+        var nextBtn = modal.querySelector('.photo-modal-next');
+
+        // Prepare gallery items (ensure images are wrapped in anchors)
+        var items = [];
+        document.querySelectorAll('.photo-collage .tile img').forEach(function(img){
+            try{ img.setAttribute('loading','lazy'); }catch(e){}
+            try{ img.setAttribute('decoding','async'); }catch(e){}
+            if(img.parentElement && img.parentElement.tagName.toLowerCase() === 'a'){
+                items.push(img.parentElement);
+                return;
+            }
+            var largeUrl = img.dataset.large || img.getAttribute('data-large') || img.src;
+            var a = document.createElement('a');
+            a.href = largeUrl;
+            var parent = img.parentNode;
+            if(parent){
+                parent.insertBefore(a, img);
+                a.appendChild(img);
+                items.push(a);
+            }
+        });
+
+        if(!items.length) return;
+
+        var current = 0;
+
+        function openIndex(i){
+            current = (i + items.length) % items.length;
+            var a = items[current];
+            var imgEl = a.querySelector('img');
+            var src = a.getAttribute('href') || imgEl.src;
+            modalImg.src = src;
+            modalImg.alt = imgEl.alt || '';
+            modalCaption.textContent = imgEl.getAttribute('data-caption') || imgEl.alt || '';
+            modal.setAttribute('aria-hidden','false');
+            // focus for accessibility
+            closeBtn.focus();
+        }
+
+        function closeModal(){ modal.setAttribute('aria-hidden','true'); modalImg.src = ''; }
+
+        function showPrev(){ openIndex(current - 1); }
+        function showNext(){ openIndex(current + 1); }
+
+        // click handlers for anchors
+        items.forEach(function(a, idx){
+            a.addEventListener('click', function(e){
+                e.preventDefault();
+                openIndex(idx);
+            });
+        });
+
+        closeBtn.addEventListener('click', closeModal);
+        prevBtn.addEventListener('click', function(e){ e.stopPropagation(); showPrev(); });
+        nextBtn.addEventListener('click', function(e){ e.stopPropagation(); showNext(); });
+
+        modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+
+        document.addEventListener('keydown', function(e){
+            if(modal.getAttribute('aria-hidden') === 'true') return;
+            if(e.key === 'Escape') closeModal();
+            if(e.key === 'ArrowLeft') showPrev();
+            if(e.key === 'ArrowRight') showNext();
+        });
+
+        // basic touch support for swipe
+        var touchStartX = 0;
+        modalContent.addEventListener('touchstart', function(e){ touchStartX = e.changedTouches[0].clientX; });
+        modalContent.addEventListener('touchend', function(e){
+            var dx = e.changedTouches[0].clientX - touchStartX;
+            if(Math.abs(dx) > 50){ if(dx > 0) showPrev(); else showNext(); }
+        });
+    });
+})();
+
 /* RSVP handling: store in localStorage, export CSV, and view responses */
 (function(){
     'use strict';
