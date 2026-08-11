@@ -569,7 +569,136 @@ a {
 }
 
 .music {
+	display: block;
+	margin: 12px 0;
+	text-align: center;
+}
+
+.music audio {
+	display: none; /* hide native audio UI, we provide play button */
+}
+
+.controls {
+	display: inline-flex;
+	gap: 8px;
+	align-items: center;
+	justify-content: center;
+	margin-top: 8px;
+}
+
+.btn {
+	background: #674ea7;
+	color: #fff;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 8px;
+	cursor: pointer;
+	font-family: 'Arvo', serif;
+}
+
+.audio-toggle {
+	position: fixed;
+	bottom: 18px;
+	right: 18px;
+	width: 48px;
+	height: 48px;
+	padding: 0;
+	border-radius: 50%;
+	background: rgba(103, 78, 167, 0.95);
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+	font-size: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.audio-toggle i {
+	color: #fff;
+}
+
+.audio-toggle:hover {
+	transform: scale(1.05);
+}
+
+.audio-toggle:focus {
+	outline: 3px solid rgba(255,255,255,0.5);
+}
+
+.btn:focus {
+	outline: 3px solid rgba(103,78,167,0.25);
+}
+
+.play-btn {
+	background: linear-gradient(90deg, #e25c67, #b33a46);
+}
+
+/* Modal styles */
+.modal {
+	position: fixed;
+	inset: 0;
 	display: none;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0,0,0,0.5);
+	z-index: 1000;
+}
+
+.modal[aria-hidden="false"] {
+	display: flex;
+}
+
+.modal-content {
+	background: #fff;
+	border-radius: 8px;
+	max-width: 90%;
+	max-height: 90%;
+	padding: 12px;
+	box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+	position: relative;
+	overflow: auto;
+}
+
+.modal-close {
+	position: absolute;
+	right: 8px;
+	top: 8px;
+	background: transparent;
+	border: none;
+	font-size: 24px;
+	cursor: pointer;
+}
+
+.modal-body img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+	margin: 0 auto 12px;
+}
+
+.modal-actions {
+	display: flex;
+	gap: 8px;
+	justify-content: center;
+	margin-top: 8px;
+}
+
+/* Device preview helper classes — simulate widths */
+.preview-phone .wrap,
+.preview-phone .modal-content {
+	width: 360px;
+	max-width: 90%;
+}
+
+.preview-tablet .wrap,
+.preview-tablet .modal-content {
+	width: 768px;
+	max-width: 90%;
+}
+
+.preview-desktop .wrap,
+.preview-desktop .modal-content {
+	width: 1024px;
+	max-width: 100%;
 }
 
 .actions {
@@ -614,3 +743,112 @@ a {
     width: 16px;
     text-align: center;
 }
+/* Photo collage styles */
+.photo-collage {
+    max-width: 900px;
+    margin: 24px auto;
+    padding: 0 16px;
+    color: #564861;
+}
+
+.photo-collage h4 {
+    font-size: 1.9rem;
+    text-align: center;
+    margin-bottom: 18px;
+    color: #674ea7;
+    font-family: 'Dancing Script', cursive;
+}
+
+.collage-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 240px;
+    gap: 12px;
+}
+
+.tile {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #f9f7fb;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+.tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.tile:hover img {
+    transform: scale(1.05);
+}
+
+.item-1 { grid-column: 1 / span 1; grid-row: 1 / span 1; }
+.item-2 { grid-column: 2 / span 1; grid-row: 1 / span 1; }
+.item-3 { grid-column: 1 / span 1; grid-row: 2 / span 1; }
+.item-4 { grid-column: 2 / span 1; grid-row: 2 / span 1; }
+
+@media (max-width: 780px) {
+    .collage-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: 220px;
+    }
+}
+
+@media (max-width: 520px) {
+    .collage-grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: 220px;
+    }
+    .photo-collage h4 {
+        font-size: 1.5rem;
+    }
+}
+
+/* RSVP styles */
+.rsvp {
+	background: rgba(247,247,250,0.9);
+	padding: 16px;
+	border-radius: 10px;
+	max-width: 420px;
+	margin: 16px auto;
+	box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.rsvp h4 {
+	font-size: 1.25em;
+	margin-bottom: 8px;
+	text-align: center;
+}
+
+.rsvp label {
+	display: block;
+	margin-top: 8px;
+	font-size: 0.95em;
+	color: #564861;
+}
+
+.rsvp input[type="text"], .rsvp input[type="tel"], .rsvp select {
+	width: 100%;
+	padding: 8px 10px;
+	margin-top: 4px;
+	border-radius: 6px;
+	border: 1px solid #ddd;
+	box-sizing: border-box;
+}
+
+.rsvp-actions {
+	display: flex;
+	gap: 8px;
+	justify-content: center;
+}
+
+#responses-table th, #responses-table td {
+	border-bottom: 1px solid #eee;
+	padding: 8px;
+}
+
+#responses-table tbody tr:nth-child(even) {background:#fafafa}

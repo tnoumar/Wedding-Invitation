@@ -10,6 +10,8 @@
       <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Dancing+Script&amp;display=swap'>
       <link rel="stylesheet" href="./css/style.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <!-- Set this to your deployed Google Apps Script Web App URL or form endpoint -->
+      <script>window.RSVP_ENDPOINT=''; /* paste your endpoint URL here after deployment */</script>
    </head>
    <body>
       <!-- partial:index.partial.html -->
@@ -28,7 +30,15 @@
             </p>
          </div>
       </div>
-      <div id="time"></div>
+      <section class="photo-collage" aria-label="Collage des photos">
+        <div class="collage-grid">
+          <figure class="tile item-1"><img src="assets/img/our pics/WhatsApp%20Image%202026-08-11%20at%2015.45.39%20(1).jpeg" alt="Photo de couple 1"></figure>
+          <figure class="tile item-2"><img src="assets/img/our pics/WhatsApp%20Image%202026-08-11%20at%2015.45.39%20(2).jpeg" alt="Photo de couple 2"></figure>
+          <figure class="tile item-3"><img src="assets/img/our pics/WhatsApp%20Image%202026-08-11%20at%2015.45.39%20(3).jpeg" alt="Photo de couple 3"></figure>
+          <figure class="tile item-4"><img src="assets/img/our pics/WhatsApp%20Image%202026-08-11%20at%2015.45.39%20(6).jpeg" alt="Photo de couple 4"></figure>
+        </div>
+      </section>
+      <div id="time" role="status" aria-live="polite"></div>
       <p class="dance-med">
          Modalités
       </p>
@@ -42,15 +52,31 @@
         <a href="https://github.com/tnoumar/Wedding-Invitation/raw/master/assets/Save the date.pdf" download="Invitation | 23 Nov | Hope to see you there!">
           <div class="venue">Télécharger l'invitation</div>
         </a>
-       
+        <button id="calendar-download" type="button" class="btn venue" style="display:inline-flex;align-items:center;gap:8px;"> <i class="fa fa-calendar"></i> Ajouter au calendrier</button>
       </div>
       <p class="footer">
          Nous avons hâte de célébrer ce moment si spécial de notre famille avec vous !
                   <span></span>
       </p>
       <div class="music">
-        <audio src="./assets/mp3/song.mp3" id="my_audio" loop="loop"></audio> 
+            <audio src="./assets/mp3/song.mp3" id="my_audio" loop="loop" autoplay></audio>
+            <div class="controls" aria-hidden="false">
+               <button id="toggle-music" class="btn audio-toggle" type="button" aria-pressed="true" aria-label="Arrêter la musique"><i class="fa fa-volume-up"></i></button>
+            </div>
       </div>
+         <!-- Invitation modal -->
+         <div id="invitation-modal" class="modal" aria-hidden="true">
+            <div class="modal-content" role="dialog" aria-modal="true" aria-label="Invitation preview">
+               <button class="modal-close" id="modal-close" aria-label="Close invitation">×</button>
+               <div class="modal-body">
+                  <img id="inv-img" src="invitation/invitation%20card.jpeg" alt="Invitation preview">
+               </div>
+               <div class="modal-actions">
+                  <a id="download-invite" href="invitation/Sonali%20%26%20Gagan.pdf" download class="btn">Download PDF</a>
+                  <button id="print-invite" class="btn">Print</button>
+               </div>
+            </div>
+         </div>
       <!-- schedule bullet points replacing happiness section -->
       <div class="schedule">
         <h4>Programme de la journée :</h4>
@@ -62,6 +88,54 @@
           <li><i class="fa fa-glass"></i> After de 12 h à 16 h</li>
         </ul>
       </div>
+         <!-- RSVP form -->
+         <div class="rsvp" id="rsvp">
+            <h4>Confirmez votre présence</h4>
+            <!-- Netlify form: name and data-netlify attributes enable Netlify Forms capture -->
+            <form id="rsvp-form" name="rsvp" method="POST" action="/?success=true" data-netlify="true" data-netlify-honeypot="bot-field">
+               <input type="hidden" name="form-name" value="rsvp">
+               <input type="hidden" name="date" id="rsvp-date" value="">
+               <!-- honeypot field for bots (Netlify) -->
+               <p style="display:none"><label>Don’t fill this out if you're human: <input name="bot-field"></label></p>
+               <label for="rsvp-name">Nom</label>
+               <input type="text" id="rsvp-name" name="name" required placeholder="Votre nom">
+
+               <label for="rsvp-phone">Numéro de contact</label>
+               <input type="tel" id="rsvp-phone" name="phone" required placeholder="+33 6 12 34 56 78">
+
+               <label for="rsvp-attending">Présence</label>
+               <select id="rsvp-attending" name="attending">
+                  <option value="yes">Oui</option>
+                  <option value="no">Non</option>
+               </select>
+
+               <div style="margin-top:12px;">
+                  <button type="submit" class="btn">Confirmer</button>
+               </div>
+            </form>
+            <div id="rsvp-msg" role="status" aria-live="polite" style="margin-top:8px;color:#145689;font-weight:700"></div>
+
+         </div>
+
+         <!-- Responses modal -->
+         <div id="responses-modal" class="modal" aria-hidden="true">
+            <div class="modal-content" role="dialog" aria-modal="true" aria-label="Réponses RSVP">
+               <button class="modal-close" id="responses-close" aria-label="Fermer les réponses">×</button>
+               <div class="modal-body">
+                  <table id="responses-table" style="width:100%;border-collapse:collapse">
+                     <thead>
+                        <tr>
+                           <th style="text-align:left;padding:8px">Nom</th>
+                           <th style="text-align:left;padding:8px">Téléphone</th>
+                           <th style="text-align:left;padding:8px">Présence</th>
+                           <th style="text-align:left;padding:8px">Date</th>
+                        </tr>
+                     </thead>
+                     <tbody></tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
       <!-- partial -->
       <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
       <script src='https://cdn.jsdelivr.net/gh/timoschaefer/jQuery-Sakura/jquery-sakura.min.js'></script>
