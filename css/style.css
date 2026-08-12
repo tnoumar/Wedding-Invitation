@@ -512,7 +512,7 @@ body {
 }
 
 .days {
-	background: linear-gradient(90deg, #f3f0f4, #e7e0eb);
+	background: linear-gradient(90deg, #cdcdcd, #e7e0eb);
 	color: #674ea7;
 }
 
@@ -525,7 +525,7 @@ background: linear-gradient(90deg, #674ea7, #dccffe);
 }
 
 .seconds {
-			background: linear-gradient(90deg, #f3f0f4, #e7e0eb);
+			background: linear-gradient(90deg, #cdcdcd, #e7e0eb);
 	color: #674ea7;
 }
 
