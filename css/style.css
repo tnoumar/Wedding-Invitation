@@ -468,9 +468,19 @@ body {
 	width: auto;
 	height: auto;
 	padding: 20px;
-	background-color: #eee;
+	background-color: transparent;
 	border-radius: 20px;
 	font-size: 16px;
+}
+
+.countdown-title {
+	font-family: 'Dancing Script', cursive;
+	font-weight: bolder;
+	font-style: normal;
+	font-size: 32px;
+	color: #674ea7;
+	margin: 16px;
+	text-align: center;
 }
 
 .venue {
@@ -496,19 +506,43 @@ body {
 
 .container {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	gap: 15px;
 	border-radius: 10px;
-	overflow: hidden;
+	overflow: visible;
+	justify-items: center;
 }
 
 .block {
-	width: 180px;
-	height: 160px;
+	width: 100px;
+	height: 120px;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
 	color: #fff;
+	border-radius: 12px;
+	font-weight: bold;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s ease;
+}
+
+.block:hover {
+	transform: scale(1.05);
+}
+
+.block > div:first-child {
+	font-size: 32px;
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+
+.block > div:last-child {
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	opacity: 0.9;
 }
 
 .days {
@@ -521,12 +555,29 @@ background: linear-gradient(90deg, #674ea7, #dccffe);
 }
 
 .minutes {
-	background: linear-gradient(90deg,   #674ea7, #dccffe);
-}
+background: linear-gradient(90deg, #cdcdcd, #e7e0eb);
+	color: #674ea7;}
 
 .seconds {
-			background: linear-gradient(90deg, #cdcdcd, #e7e0eb);
-	color: #674ea7;
+		background: linear-gradient(90deg, #674ea7, #dccffe);
+
+	/* background: linear-gradient(135deg, #95E1D3, #38ADA9); */
+}
+
+@media (max-width: 768px) {
+	.container {
+		grid-template-columns: 1fr 1fr;
+		gap: 10px;
+	}
+	
+	.block {
+		width: 80px;
+		height: 100px;
+	}
+	
+	.block > div:first-child {
+		font-size: 24px;
+	}
 }
 
 .date {
