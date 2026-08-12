@@ -67,7 +67,41 @@ var styles2 = [
 ].join(';');
 
 console.log('\n\n%c RÉSERVEZ LA DATE : 5 septembre 2026 – 10h45!', styles);
+// Scroll-based fade effect for content - only at the top
+function applyScrollFade() {
+    // Exclude decorations and other static elements
+    const fadeElements = document.querySelectorAll('.wrap, .photo-collage, #time, .schedule, .rsvp, .actions, .footer, .music');
+    
+    // Never touch decorations
+    const decorations = document.querySelectorAll('.top-right-decoration, .top-left-decoration');
+    decorations.forEach(function(dec) {
+        dec.style.opacity = '1';
+        dec.style.transform = 'none';
+    });
+    
+    fadeElements.forEach(function(element) {
+        const rect = element.getBoundingClientRect();
+        const elementTop = rect.top;
+        const elementHeight = rect.height;
+        
+        // Only apply fade when scrolling out the top
+        if (elementTop < 0) {
+            // Element is exiting from the top
+            const fadeOutDistance = 200; // Distance over which fade occurs
+            const fadePercent = Math.abs(elementTop) / fadeOutDistance;
+            element.style.opacity = Math.max(0, 1 - fadePercent);
+        } else {
+            // Element is visible or below
+            element.style.opacity = '1';
+        }
+    });
+}
 
+// Apply fade effect on scroll
+window.addEventListener('scroll', applyScrollFade);
+
+// Initial apply on load
+applyScrollFade();
 console.log('%cVotre présence est requise !%c\n\nChaleureusement, Taha & Marbella', styles1, styles2);
 
 
