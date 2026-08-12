@@ -512,19 +512,21 @@ body {
 }
 
 .days {
-	background: linear-gradient(90deg, #b33a46, #9b313c);
+	background: linear-gradient(90deg, #f3f0f4, #e7e0eb);
+	color: #674ea7;
 }
 
 .hours {
-	background: linear-gradient(90deg, #a7c3cd, #90a9b2);
+background: linear-gradient(90deg, #674ea7, #dccffe);
 }
 
 .minutes {
-	background-color: #874562;
+	background: linear-gradient(90deg,   #674ea7, #dccffe);
 }
 
 .seconds {
-	background-color: #145689;
+			background: linear-gradient(90deg, #f3f0f4, #e7e0eb);
+	color: #674ea7;
 }
 
 .date {
