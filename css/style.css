@@ -92,19 +92,19 @@
 	}
 }
 
-@keyframes fadeIn {
+/* @keyframes fadeIn {
 	0% {
 		opacity: 0;
 	}
 	100% {
 		opacity: 1;
 	}
-}
+} */
 
-.fade-content {
+/* .fade-content {
 	opacity: 1;
 	transition: opacity 0.1s linear;
-}
+} */
 
 @-webkit-keyframes sway-0 {
 	0% {
