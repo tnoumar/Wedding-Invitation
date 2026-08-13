@@ -97,11 +97,11 @@ console.log('\n\n%c RÉSERVEZ LA DATE : 5 septembre 2026 – 10h45!', styles);
 //     });
 // }
 
-// Apply fade effect on scroll
-window.addEventListener('scroll', applyScrollFade);
+// // Apply fade effect on scroll
+// window.addEventListener('scroll', applyScrollFade);
 
-// Initial apply on load
-applyScrollFade();
+// // Initial apply on load
+// applyScrollFade();
 console.log('%cVotre présence est requise !%c\n\nChaleureusement, Taha & Marbella', styles1, styles2);
 
 
